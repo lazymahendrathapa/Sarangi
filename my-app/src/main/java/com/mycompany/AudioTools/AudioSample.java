@@ -31,14 +31,16 @@ public class AudioSample{
         } catch(IOException ex){
             throw new Exception("File " + audioFile.getName() + " is not readable.");
         }
-      
+
         AudioFormat originalAudioFormat = audioInputStream.getFormat();
         audioFormat = getConvertedAudioFormat(originalAudioFormat);
+
 
         if(!audioFormat.matches(originalAudioFormat))
              audioInputStream = AudioSystem.getAudioInputStream(audioFormat,audioInputStream);
 
-        channelSamples = extractSampleValues(audioInputStream, audioFormat);
+        channelSamples = extractSampleValues(audioInputStream);
+        
         samples = getSamplesMixedDownIntoOneChannel(channelSamples);
 
         audioInputStream.close();
@@ -71,54 +73,100 @@ public class AudioSample{
      * Returns an array of doubles representing the samples for each channel in the given AudioInputStream
      */
 
-    public double[][] extractSampleValues(AudioInputStream audioInputStream, AudioFormat audioFormat) throws Exception{
+    public double[][] extractSampleValues(AudioInputStream audioInputStream) throws Exception{
+            
+        //Converts the contents of audioInputStream into an array of bytes
 
+        byte[] audioBytes = getBytesFromAudioInputStream(audioInputStream);
 
-      long bSamples = getSampleCount(audioInputStream,audioFormat);
-      long bBytes = bSamples * (audioFormat.getSampleSizeInBits()/8)*audioFormat.getChannels();
+        int numberBytes = audioBytes.length;
 
-      byte[] inBuffer = new byte[(int)bBytes];
+        AudioFormat thisAudioFormat = audioInputStream.getFormat();
 
-      try{
-             audioInputStream.read(inBuffer,0,inBuffer.length);
-      
-      }catch(IOException exp){
-           System.out.println(exp); 
-      }
+        //Extract information from thisAudioFormat
+        int numberOfChannels = thisAudioFormat.getChannels();
+        int bitDepth = thisAudioFormat.getSampleSizeInBits();
 
-      double maxSampleValue = Math.pow(2,audioFormat.getSampleSizeInBits()-1);
- 
-      //Convert the bytes to double samples
-      ByteBuffer byteBuffer = ByteBuffer.wrap(inBuffer);
-      int bitDepth = audioFormat.getSampleSizeInBits();
-      int numberOfChannels = audioFormat.getChannels();
+        //Find the number of samples in the audio bytes
+        int numberOfBytes = audioBytes.length;
+        int bytesPerSample = bitDepth/8;
+        int numberSamples = numberOfBytes / bytesPerSample / numberOfChannels;
 
-      double[][] sampleValues = new double[numberOfChannels][(int)bSamples];
+        //Find the maximum possible value that a sample may have with the given bit depth
+        double maxSampleValue = Math.pow(2,audioFormat.getSampleSizeInBits()-1);
 
-      if(bitDepth == 8){
+        double[][] sampleValue = new double[numberOfChannels][numberSamples];
 
-            for(int samp = 0; samp<(int)bSamples; ++samp)
-                for(int chan = 0; chan < numberOfChannels; ++chan)
-                        sampleValues[chan][samp] = (double)byteBuffer.get()/maxSampleValue;
+        //Convert the bytes to double samples
+        ByteBuffer byteBuffer = ByteBuffer.wrap(audioBytes);
 
-      }else if(bitDepth == 16){
+        if(bitDepth == 8){
+
+            for (int samp = 0; samp < numberSamples; ++samp)
+                for(int chan = 0; chan <numberOfChannels; ++chan)
+                    sampleValue[chan][samp] = (double)byteBuffer.get()/maxSampleValue;
+
+        }else if(bitDepth == 16){
 
             ShortBuffer shortBuffer = byteBuffer.asShortBuffer();
-              for(int samp = 0; samp<(int)bSamples; ++samp)
-                for(int chan = 0; chan < numberOfChannels; ++chan)
-                        sampleValues[chan][samp] = (double)shortBuffer.get()/maxSampleValue;
+         
+            for (int samp = 0; samp < numberSamples; ++samp)
+                for(int chan = 0; chan <numberOfChannels; ++chan)
+                    sampleValue[chan][samp] = (double)shortBuffer.get()/maxSampleValue;
+        }
 
-      }
-
-        return sampleValues;
-      
+        return sampleValue;
     }
 
-    public long getSampleCount(AudioInputStream audioInputStream, AudioFormat audioFormat){
-        long totalSamples = (audioInputStream.getFrameLength()*audioFormat.getFrameSize()*8)/audioFormat.getSampleSizeInBits();
-        return totalSamples/audioFormat.getChannels(); 
+    /**
+     * Generates an array of audio bytes based on the contents of the given AudioInputStream
+     */
+
+    public byte[] getBytesFromAudioInputStream(AudioInputStream audioInputStream) throws Exception{
+
+        //Calculate the buffer size to use
+        float bufferDurationInSeconds = 0.25F;
+        int bufferSize = getNumberBytesNeeded(bufferDurationInSeconds,audioInputStream.getFormat());
+
+        byte rwBuffer[] = new byte[bufferSize + 2];
+
+        //Read the bytes into rwBuffer and then into the ByteArrayOutputStream
+
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+
+        int position = audioInputStream.read(rwBuffer,0,rwBuffer.length);
+        
+        while(position > 0){
+
+            byteArrayOutputStream.write(rwBuffer,0,position);
+            position = audioInputStream.read(rwBuffer,0,rwBuffer.length);
+        }
+
+        byte[] results = byteArrayOutputStream.toByteArray();
+
+        try{
+              byteArrayOutputStream.close();
+        }catch(IOException e){
+
+            System.out.println(e);
+            System.exit(0);
+        }
+
+        return results;
     }
-   
+ 
+
+    /**
+     * Returns the number of bytes needed to store samples corresponding to audio of fixed duration
+     */
+
+    public int getNumberBytesNeeded(double durationInSeconds, AudioFormat audioFormat){
+
+        int frameSizeInBytes = audioFormat.getFrameSize();
+        float frameRate = audioFormat.getFrameRate();
+        return (int) (frameSizeInBytes * frameRate * durationInSeconds);
+    }
+
     /**
      * Returns the given set of samples as a set of samples mixed down into one channel.
      *
