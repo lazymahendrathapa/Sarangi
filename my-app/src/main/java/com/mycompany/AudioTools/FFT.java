@@ -26,7 +26,7 @@ public class FFT{
         imagOutput = new double[samples.length];
 
 
-        double[] fftData = new double[samples.length];
+        double[] fftData = new double[samples.length * 2];
 
         for(int i=0; i<samples.length; ++i){
 
