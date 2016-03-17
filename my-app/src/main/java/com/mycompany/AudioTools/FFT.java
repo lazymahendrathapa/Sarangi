@@ -19,6 +19,8 @@ public class FFT{
    protected double[] outputMagnitude;
    protected double[] outputPower;
 
+   protected double[] outputFrequencyAmplitude;
+
    public FFT(double[] samples){
 
         fft = new DoubleFFT_1D(samples.length);
@@ -42,11 +44,12 @@ public class FFT{
             imagOutput[i] = fftData[2 * i + 1];
         }
 
-        // Set the angl, power and magnitude to null originally
+        // Set the angle, power, frequency amplitude and magnitude to null originally
         outputAngle = null;
         outputMagnitude = null;
         outputPower = null;
-
+        outputFrequencyAmplitude = null;
+        
    }
 
    /**
@@ -109,6 +112,26 @@ public class FFT{
 
    }
 
+   /**
+    * Returns the Frequency amplitudes of the spectrum
+    *
+    */
+
+   public double[] getFrequencyAmplitudeSpectrum(){
+
+        if(outputFrequencyAmplitude== null){
+
+                int numberUnfoldedBins = imagOutput.length;
+                outputFrequencyAmplitude = new double[numberUnfoldedBins];
+
+                for(int i=0; i<outputFrequencyAmplitude.length; ++i)
+                     outputFrequencyAmplitude[i] = (realOutput[i] * realOutput[i] + imagOutput[i] * imagOutput[i]);
+                
+        }
+
+        return outputFrequencyAmplitude;
+        
+   }
 
    /**
     * Returns the phase angle for each frequency bin. Only the left side of the spectrum is returned.
