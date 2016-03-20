@@ -8,13 +8,34 @@ import com.mycompany.JSON.*;
 import java.io.*;
 import java.util.*;
 
+import com.mycompany.kmeans.*;
+
 public class App {
 
-    protected static Song[] song;
+    //protected static Song[] song;
 
-    public static void main (String args[])
-    {
+    public static void main (String args[]) 
+            throws FileNotFoundException, IOException {
 
+                String filename = "src/resources/SongFeatures/Features.txt";
+
+                if (args.length == 1) {
+                        filename = args[0];
+                }
+
+                Kmeans kMeansRunner = new Kmeans(5);
+
+                kMeansRunner.readAllSongs(filename);
+
+                kMeansRunner.initialize();
+
+                List<SongCluster> results = kMeansRunner.run();
+
+                for (SongCluster cluster: results) {
+                        cluster.display();
+                }
+
+                /*
      try{
 
         File folder = new File("src/resources/Song");
@@ -48,6 +69,7 @@ public class App {
      }catch(Exception e){
          System.out.println(e);
      }
+     */
     
     }
 }

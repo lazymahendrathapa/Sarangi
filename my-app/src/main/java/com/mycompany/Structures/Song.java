@@ -1,4 +1,4 @@
-package com.mycompany.Structures;
+package com.mycompany.structures;
 
 /**
  * Simple Data Structure to hold information related to a song.
