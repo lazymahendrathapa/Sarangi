@@ -1,5 +1,8 @@
-resources/
+Song/
 *.class
+.classpath
+.project
+.settings/
 target/
 pom.xml.tag
 pom.xml.releaseBackup
@@ -9,3 +12,4 @@ release.properties
 dependency-reduced-pom.xml
 buildNumber.properties
 .mvn/timing.properties
+*.swp
