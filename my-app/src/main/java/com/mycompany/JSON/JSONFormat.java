@@ -49,11 +49,9 @@ public class JSONFormat{
                 return allSongs;
   
           }catch(Exception ex){
-               System.out.println(ex);
-               System.exit(0);
           }
 
-          return null;
+          return new ArrayList<Song>();
   }
 
 
