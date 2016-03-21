@@ -1,6 +1,6 @@
 package com.mycompany.JSON;
 
-import com.mycompany.Structures.*;
+import com.mycompany.structures.*;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.stream.JsonReader;
@@ -52,7 +52,7 @@ public class JSONFormat{
           }catch(Exception ex){
           }
 
-          return new ArrayList<Song>
+          return new ArrayList<Song>();
   }
 
 

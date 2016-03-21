@@ -2,7 +2,7 @@ package com.mycompany.app;
 
 import com.mycompany.AudioTools.*;
 import com.mycompany.AudioFeatures.*;
-import com.mycompany.Structures.*;
+import com.mycompany.structures.*;
 import com.mycompany.JSON.*;
 
 import java.io.*;
@@ -23,8 +23,10 @@ public class FeatureExtractor{
         File folder = new File("src/resources/Song");
         File[] listOfFiles = folder.listFiles();
 
+        int numOfFiles = listOfFiles.length;
+
                
-        for(int i=0; i<listOfFiles.length; ++i){
+        for(int i=0; i<numOfFiles; ++i){
    
             boolean flag = false;
             String songName = listOfFiles[i].getName();
@@ -39,6 +41,8 @@ public class FeatureExtractor{
 
             if(!flag){
                     File fileName = new File("src/resources/Song/"+songName);
+
+                    System.out.println("Extracting: ("+i+" of "+numOfFiles+"): "+songName);
 
                     AudioSample audioSample = new AudioSample(fileName);
                     double[] samples = audioSample.getAudioSamples();

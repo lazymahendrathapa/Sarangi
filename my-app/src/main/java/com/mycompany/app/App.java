@@ -9,11 +9,16 @@ import com.mycompany.kmeans.*;
 
 public class App {
 
-   public static void main (String args[]) {
-    //protected static Song[] song;
-
     public static void main (String args[]) 
             throws FileNotFoundException, IOException {
+
+            try{
+
+                    FeatureExtractor featureExtractor = new FeatureExtractor();
+
+            }catch(Exception e){
+                System.out.println(e);
+            }
 
                 String filename = "src/resources/SongFeatures/Features.txt";
 
@@ -32,15 +37,6 @@ public class App {
                 for (SongCluster cluster: results) {
                         cluster.display();
                 }
-                /*
-     try{
-
-             FeatureExtractor featureExtractor = new FeatureExtractor();
-
-     }catch(Exception e){
-         System.out.println(e);
-     }
-     */
     
     }
 }

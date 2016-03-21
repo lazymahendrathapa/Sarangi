@@ -24,8 +24,8 @@ public class Kmeans {
 
         List<SongCluster> clusters;
         List<SarangiSong> allSongs;
-        int k = 4;
-        final int MAX_ITERATION = 10000;
+        int k = 5;
+        final int MAX_ITERATION = 100000;
 
         public Kmeans() {
                 clusters = new ArrayList<SongCluster>();
@@ -95,10 +95,13 @@ public class Kmeans {
                                 SarangiSong song = allSongs.get(i);
 
                                 int closestClusterIndex = 0;
+                                /*
                                 double minDistance = clusters.get(0)
                                         .distanceToCentroid(song);
+                                        */
+                                double minDistance = 100000000000.0d;
 
-                                for (int j=1; j<k; j++) {
+                                for (int j=0; j<k; j++) {
 
                                         double dist = clusters.get(j)
                                                 .distanceToCentroid(song);
@@ -117,7 +120,8 @@ public class Kmeans {
                         boolean sameCentroid = true;
 
                         for (int j=0; j<k; j++) {
-                                sameCentroid = sameCentroid && clusters.get(j).computeCentroid();
+                                boolean sameCentroidTemp = clusters.get(j).computeCentroid();
+                                sameCentroid = sameCentroid && sameCentroidTemp;
                         }
 
                         iteration++;
@@ -138,6 +142,8 @@ public class Kmeans {
                         */
 
                 }
+
+                System.out.println("Iterations: "+iteration);
 
                 return clusters;
         }

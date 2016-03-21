@@ -109,7 +109,7 @@ public class SarangiSong {
 
                 SarangiSong other = (SarangiSong) obj;
 
-                if (other.intensity != this.intensity) 
+                if (Double.compare(other.intensity , this.intensity) != 0)
                         return false;
 
                 if (other.mfcc.size() != this.mfcc.size())
@@ -319,6 +319,13 @@ public class SarangiSong {
                 for (Double item: sum.mfcc) {
                         this.mfcc.add(item);
                 }
+
+        }
+
+        public void display() {
+
+                System.out.println("Name:"+name);
+                System.out.println("Intensity:"+intensity);
 
         }
 

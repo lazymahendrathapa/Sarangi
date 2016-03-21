@@ -101,4 +101,9 @@ public class SongCluster {
                 Collections.shuffle(songCollection);
         }
 
+        public void displayCentroid() {
+                System.out.println("ID:"+id);
+                centroid.display();
+        }
+
 }
