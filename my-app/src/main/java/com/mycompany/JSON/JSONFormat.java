@@ -2,6 +2,7 @@ package com.mycompany.JSON;
 
 import com.mycompany.Structures.*;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.reflect.*;
 import java.lang.reflect.Type;
@@ -18,7 +19,7 @@ public class JSONFormat{
 
     public void convertArrayToJSON(ArrayList<Song> song){
 
-        Gson gson = new Gson();
+        Gson gson = new GsonBuilder().serializeSpecialFloatingPointValues().create();
             String json = gson.toJson(song);
 
          try{
@@ -49,11 +50,9 @@ public class JSONFormat{
                 return allSongs;
   
           }catch(Exception ex){
-               System.out.println(ex);
-               System.exit(0);
           }
 
-          return null;
+          return new ArrayList<Song>
   }
 
 
