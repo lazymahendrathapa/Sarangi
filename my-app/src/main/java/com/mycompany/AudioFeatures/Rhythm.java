@@ -16,7 +16,7 @@ public class Rhythm{
     protected double localEnergy[][]; 
     protected double rhythmFeatures[] = new double[subBands];
     protected int energyOverLappingSize = 43; 
-    protected int C = 250;
+    protected int C = 25;
 
     public Rhythm(double[] audioSamples){
 

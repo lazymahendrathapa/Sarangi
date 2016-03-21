@@ -65,10 +65,10 @@ public class FeatureExtractor{
                     MFCC mfcc = new MFCC(samples);
                     double[] mfccFeatures = mfcc.getMFCCFeatures();
          
-                    //Rhythm rhythm = new Rhythm(samples);
-                    //double[] rhythmicFeatures = rhythm.getRhythmicFeatures();
+                    Rhythm rhythm = new Rhythm(samples);
+                    double[] rhythmicFeatures = rhythm.getRhythmicFeatures();
 
-                      song.add(new Song(songName, intensityFeatures,mfccFeatures));
+                      song.add(new Song(songName, intensityFeatures,mfccFeatures, rhythmicFeatures));
             }
        
         }

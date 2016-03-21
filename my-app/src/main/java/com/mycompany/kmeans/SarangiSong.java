@@ -18,6 +18,7 @@ public class SarangiSong {
         private String name;
         private double intensity;
         private List<Double> mfcc;
+        private List<Double> rhythm;
 
         private int clusterID = 0;
 
@@ -33,7 +34,7 @@ public class SarangiSong {
          *
          */
 
-        public SarangiSong(String name, double intensity, List<Double> mfcc) {
+        public SarangiSong(String name, double intensity, List<Double> mfcc, List<Double> rhythm) {
 
                 this.name = name;
                 this.intensity = intensity;
@@ -42,6 +43,12 @@ public class SarangiSong {
 
                 for (Double item: mfcc) {
                         this.mfcc.add(item);
+                }
+
+                this.rhythm = new ArrayList<Double>();
+
+                for (Double item: rhythm) {
+                        this.rhythm.add(item);
                 }
 
         }
@@ -64,6 +71,12 @@ public class SarangiSong {
                         this.mfcc.add(sarangiSong.mfcc.get(i));
                 }
 
+                this.rhythm = new ArrayList<Double>();
+
+                for (int i=0; i<sarangiSong.rhythm.size(); i++) {
+                        this.rhythm.add(sarangiSong.rhythm.get(i));
+                }
+
         }
         
         /**
@@ -84,6 +97,11 @@ public class SarangiSong {
                         this.mfcc.add(song.mfcc[i]);
                 }
 
+                this.rhythm = new ArrayList<Double>();
+
+                for (int i=0; i<song.rhythm.length; i++) {
+                        this.rhythm.add(song.rhythm[i]);
+                }
         }
         
         /**
@@ -115,10 +133,21 @@ public class SarangiSong {
                 if (other.mfcc.size() != this.mfcc.size())
                         return false;
 
+                if (other.rhythm.size() != this.rhythm.size())
+                        return false;
+
+
                 int len = this.mfcc.size();
 
                 for (int i=0; i<len; i++) {
                         if (!other.mfcc.get(i).equals(this.mfcc.get(i)))
+                                return false;
+                }
+
+                int rlen = this.rhythm.size();
+
+                for (int i=0; i<rlen; i++) {
+                        if (!other.rhythm.get(i).equals(this.rhythm.get(i)))
                                 return false;
                 }
 
@@ -159,6 +188,15 @@ public class SarangiSong {
                             (int)(mfccFieldBits ^ (mfccFieldBits >>> 32));
                 }
 
+                int rlen = this.rhythm.size();
+
+                for (int i=0; i<len; i++) {
+                    long rhythmFieldBits = 
+                            Double.doubleToLongBits(this.rhythm.get(i));     
+                    result = 31 * result + 
+                            (int)(rhythmFieldBits ^ (rhythmFieldBits >>> 32));
+                }
+
                 return result;
 
         }
@@ -176,6 +214,7 @@ public class SarangiSong {
         public void clearData() {
                 this.intensity = 0.0d;
                 this.mfcc.clear();
+                this.rhythm.clear();
         }
 
         /**
@@ -193,6 +232,12 @@ public class SarangiSong {
 
                 for (int i=0; i<song.mfcc.length; i++) {
                         this.mfcc.add(song.mfcc[i]);
+                }
+
+                this.rhythm = new ArrayList<Double>();
+
+                for (int i=0; i<song.rhythm.length; i++) {
+                        this.rhythm.add(song.rhythm[i]);
                 }
         }
 
@@ -238,7 +283,12 @@ public class SarangiSong {
                         newMFCC.add(value/d);
                 }
 
-                return new SarangiSong(this.name,newIntensity,newMFCC);
+                List<Double> newRhythm = new ArrayList<Double>();
+
+                for (Double value: this.rhythm) {
+                        newRhythm.add(value/d);
+                }
+                return new SarangiSong(this.name,newIntensity,newMFCC,newRhythm);
                 
         }
 
@@ -259,6 +309,11 @@ public class SarangiSong {
                         this.mfcc.set(i,this.mfcc.get(i)/d);
                 }
 
+                int rlen = this.rhythm.size();
+                for (int i=0; i<rlen; i++) {
+                        //this.rhythm.get(i) = this.rhythm.get(i)/d;
+                        this.rhythm.set(i,this.rhythm.get(i)/d);
+                }
         }
 
         /**
@@ -297,7 +352,29 @@ public class SarangiSong {
                         newMFCC.add(val1+val2);
                 }
 
-                return new SarangiSong(this.name,newIntensity,newMFCC);
+                int rlen = this.rhythm.size();
+                int rlen2 = s2.rhythm.size();
+
+                // The greater of the two lengths is the new length
+                int newrLen = (rlen > rlen2)? rlen: rlen2;
+
+                List<Double> newRhythm = new ArrayList<Double>();
+
+                for (int i=0; i<newrLen; i++) {
+                        double val1 = 0.0d;
+                        double val2 = 0.0d;
+
+                        if (rlen < newrLen) {
+                                val1 = this.rhythm.get(i);
+                        }
+
+                        if (rlen2 < newrLen) {
+                                val2 = s2.rhythm.get(i);
+                        }
+
+                        newRhythm.add(val1+val2);
+                }
+                return new SarangiSong(this.name,newIntensity,newMFCC,newRhythm);
         }
 
         /**
@@ -318,6 +395,12 @@ public class SarangiSong {
 
                 for (Double item: sum.mfcc) {
                         this.mfcc.add(item);
+                }
+
+                this.rhythm = new ArrayList<Double>(); 
+
+                for (Double item: sum.rhythm) {
+                        this.rhythm.add(item);
                 }
 
         }
@@ -344,6 +427,7 @@ public class SarangiSong {
 
                 double weightIntensity = 1.0d;
                 double weightMFCC = 1.0d;
+                double weightRhythm = 1.0d;
 
                 double sum = 0.0d;
 
@@ -359,7 +443,17 @@ public class SarangiSong {
 
                 }
 
-                sum += weightMFCC * mfccSum;
+                int rlen = s1.rhythm.size();
+
+                double rhythmSum = 0.0d;
+
+                for (int i=0; i<rlen; i++) {
+
+                        rhythmSum += Math.pow((s1.rhythm.get(i) - s2.rhythm.get(i)),2);
+
+                }
+
+                sum += weightRhythm * rhythmSum;
 
                 return Math.sqrt(sum);
 
