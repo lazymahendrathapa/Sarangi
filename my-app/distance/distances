@@ -1,0 +1,48 @@
+// Distance wI = 1.0, mI = 1.0, rI = 1.0
+Distance:Classical-12.mp3 to Jazz-11.mp3 => 59.80492225997541
+Distance:Pop-19.mp3 to Jazz-4.mp3 => 320.9455169324791
+Distance:Pop-18.mp3 to Pop-17.mp3 => 102.03630292981451
+Distance:Jazz-20.mp3 to Classical-24.mp3 => 208.47384068656174
+Distance:Hiphop-13.mp3 to Pop-13.mp3 => 261.22291368028874
+
+// Distance wI = 1.0, mI = 0.0, rI = 0.0
+Distance:Hiphop-19.mp3 to Hiphop-22.mp3 => 2.040754934682525
+Distance:Rock-2.mp3 to Pop-2.mp3 => 5.413975309038079
+Distance:Jazz-17.mp3 to Jazz-24.mp3 => 8.023649990619937
+Distance:Hiphop-12.mp3 to Hiphop-22.mp3 => 1.226452920757879
+Distance:Classical-24.mp3 to Jazz-14.mp3 => 8.384843350622269
+
+// Distance wI = 100.0, mI = 0.0, rI = 0.0
+Distance:Pop-19.mp3 to Hiphop-25.mp3 => 68.47675305914557
+Distance:Pop-23.mp3 to Classical-12.mp3 => 52.492303535557454
+Distance:Hiphop-8.mp3 to Pop-16.mp3 => 78.23335069364738
+Distance:Classical-4.mp3 to Hiphop-13.mp3 => 164.63392513629023
+Distance:Rock-12.mp3 to Hiphop-11.mp3 => 7.997820791581205
+
+// Distance wI = 0.0, mI = 1.0, rI = 0.0
+Distance:Jazz-14.mp3 to Hiphop-12.mp3 => 1.3214395506747165
+Distance:Classical-12.mp3 to Classical-17.mp3 => 1.999099196158499
+Distance:Rock-20.mp3 to Pop-3.mp3 => 4.804355970858786
+Distance:Classical-19.mp3 to Pop-17.mp3 => 7.071766249566722
+Distance:Hiphop-12.mp3 to Rock-23.mp3 => 1.74893627714425
+
+// Distance wI = 0.0, mI = 100.0, rI = 0.0
+Distance:Jazz-1.mp3 to Rock-22.mp3 => 27.618309636222087
+Distance:Classical-8.mp3 to Jazz-19.mp3 => 13.14132656210804
+Distance:Hiphop-10.mp3 to Classical-20.mp3 => 60.03994447253404
+Distance:Rock-7.mp3 to Pop-4.mp3 => 30.466964207377192
+Distance:Hiphop-19.mp3 to Jazz-10.mp3 => 28.619047128272015
+
+// Distance wI = 0.0, mI = 0.0, rI = 1.0
+Distance:Jazz-19.mp3 to Pop-14.mp3 => 275.6755339162328
+Distance:Hiphop-12.mp3 to Rock-19.mp3 => 320.96884584021547
+Distance:Rock-1.mp3 to Hiphop-24.mp3 => 88.66228059327146
+Distance:Classical-8.mp3 to Jazz-11.mp3 => 65.10760324263211
+Distance:Classical-25.mp3 to Pop-22.mp3 => 27.820855486487112
+
+// Distance wI = 0.0, mI = 0.0, rI = 100.0
+Distance:Rock-13.mp3 to Rock-4.mp3 => 1043.839068055991
+Distance:Pop-7.mp3 to Rock-14.mp3 => 664.4546636152086
+Distance:Jazz-6.mp3 to Hiphop-24.mp3 => 1837.443876693925
+Distance:Jazz-18.mp3 to Rock-9.mp3 => 727.7362159464101
+Distance:Hiphop-22.mp3 to Jazz-3.mp3 => 1793.6833611315014
