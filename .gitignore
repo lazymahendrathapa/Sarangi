@@ -3,7 +3,7 @@
 .classpath
 .project
 .settings/
-/my-app/target/**
+/my-app/target
 pom.xml.tag
 pom.xml.releaseBackup
 pom.xml.versionsBackup
