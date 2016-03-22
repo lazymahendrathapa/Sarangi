@@ -405,6 +405,18 @@ public class SarangiSong {
 
         }
 
+        public boolean hasLabel(String label) {
+                int hyphenIndex = name.indexOf("-");
+
+                if (hyphenIndex!=-1) {
+                    String tempLabel = name.substring(0,hyphenIndex);
+
+                    return tempLabel.equals(label);
+                }
+
+                return false;
+        }
+
         public void display() {
 
                 System.out.println("Name:"+name);
@@ -431,7 +443,7 @@ public class SarangiSong {
 
                 double sum = 0.0d;
 
-                sum = weightIntensity * Math.pow((s1.intensity - s2.intensity),2);
+                sum = weightIntensity * Math.pow((s1.intensity * weightMFCC - s2.intensity * weightMFCC),2);
 
                 int len = s1.mfcc.size();
 
@@ -439,9 +451,12 @@ public class SarangiSong {
 
                 for (int i=0; i<len; i++) {
 
-                        mfccSum += Math.pow((s1.mfcc.get(i) - s2.mfcc.get(i)),2);
+                        mfccSum += Math.pow((s1.mfcc.get(i)- s2.mfcc.get(i)),2);
 
                 }
+
+                //sum += weightMFCC * mfccSum;
+                sum += mfccSum;
 
                 int rlen = s1.rhythm.size();
 

@@ -10,11 +10,31 @@ public class SongCluster {
         private List<SarangiSong> songCollection;
         private SarangiSong centroid;
         private int id;
+        private String label;
 
         public SongCluster(int id) {
                 this.id = id;
                 this.songCollection = new ArrayList<SarangiSong>();
                 this.centroid = new SarangiSong();
+        }
+
+        public void setLabel(String label) {
+                this.label = label; 
+        }
+
+        public int countSongsWithLabel(String label) {
+                int count = 0;
+                int numOfSongs = songCollection.size();
+                for (int i=0; i<numOfSongs; i++) {
+                        if (songCollection.get(i).hasLabel(label))
+                                count++;
+                }
+
+                return count;
+        }
+
+        public String getLabel() {
+                return this.label;
         }
 
         public int getID() {
@@ -41,6 +61,10 @@ public class SongCluster {
                 List<SarangiSong> songCollectionClone = new ArrayList<SarangiSong>(songCollection);
 
                 return songCollectionClone;
+        }
+
+        public int getNumOfSongs() {
+                return songCollection.size();
         }
 
         public double distanceToCentroid(SarangiSong song) {
@@ -84,6 +108,7 @@ public class SongCluster {
                 System.out.println();
 
                 System.out.println("ID:"+id);
+                System.out.println("Label:"+label);
                 System.out.println("Centroid:"+centroid.getName());
                 for (SarangiSong song: songCollection) {
                     System.out.println(song.getName());

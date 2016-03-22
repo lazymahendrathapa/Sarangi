@@ -32,11 +32,22 @@ public class App {
 
                 kMeansRunner.initialize();
 
+                //kMeansRunner.showRandomDistances();
                 List<SongCluster> results = kMeansRunner.run();
 
-                for (SongCluster cluster: results) {
-                        cluster.display();
-                }
+
+                List<String> labels = new ArrayList<String>();
+                labels.add("Rock");
+                labels.add("Classical");
+                labels.add("Pop");
+                labels.add("Hiphop");
+                labels.add("Jazz");
+
+
+                Analyzer analyzer = new Analyzer(results,labels);
+                analyzer.assignBestLabels();
+                analyzer.display();
+                analyzer.displayConfusionMatrix();
     
     }
 }

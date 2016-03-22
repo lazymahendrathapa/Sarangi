@@ -63,7 +63,8 @@ public class Kmeans {
                         list.add(new Integer(i));
                 }
 
-                Collections.shuffle(list);
+                long seed = System.nanoTime();
+                Collections.shuffle(list, new Random(seed));
 
                 // Use the first k numbers from the randomly shuffled list as index 
                 for (int i=0; i<k; i++) {
@@ -76,6 +77,21 @@ public class Kmeans {
                         newCluster.setCentroid(allSongs.get(index));
                         clusters.add(newCluster);
                 }
+        }
+
+        public void showRandomDistances() {
+                Random rand = new Random();
+
+                for (int m=0; m<5; m++) {
+                    int i = rand.nextInt(allSongs.size());
+                    int j = rand.nextInt(allSongs.size());
+
+                    System.out.println("Distance:"+allSongs.get(i).getName()+" to "+allSongs.get(j).getName()+" => "
+                                    + SarangiSong.distance(allSongs.get(i),allSongs.get(j)));
+                }
+
+
+
         }
 
         public List<SongCluster> run() {
